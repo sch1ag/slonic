@@ -1,0 +1,8 @@
+{
+        "SCRIPT"        : "slonic.courier.pl",
+        "CFG_NAME"      : "slonic.courier",
+        "PROFILES"      : ["default"],
+        "FORCE_SWITCH"  : "",
+        "#FORCE_SWITCH" : "on/off/any other value == not defined",
+        "CONDITION"     : "OSNAME eq Linux|OSNAME eq SunOS & VERSION>=9|OSNAME eq AIX|OSNAME eq HP-UX"
+}

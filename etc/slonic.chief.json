@@ -1,0 +1,5 @@
+{
+    "REL_ORDERS_DIRNAME": "slonic.chief.orders",
+    "PROFILES": ["default"],
+    "CHECK_INTERVAL": 5
+}

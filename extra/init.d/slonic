@@ -1,0 +1,41 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          slonic
+# Required-Start:    $local_fs $remote_fs $network $named $time
+# Required-Stop:     $local_fs $remote_fs $network $named $time
+# Should-Start:      $syslog
+# Should-Stop:       $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Starts the SimpLe ONline Information Collector
+# Description:       Start the SimpLe ONline Information Collector,
+#                    system activity collector programm.
+### END INIT INFO
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+
+. /etc/default/slonic
+
+case "$1" in
+  start)
+        ${SLONIC_HOME}/bin/slonic.sh start
+	;;
+  stop)
+        ${SLONIC_HOME}/bin/slonic.sh stop
+	;;
+  restart)
+        ${SLONIC_HOME}/bin/slonic.sh stop
+        ${SLONIC_HOME}/bin/slonic.sh start
+	;;
+  status)
+        ${SLONIC_HOME}/bin/slonic.sh status
+	exit 0
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart|status}"
+	exit 1
+esac
+
+exit 0
+

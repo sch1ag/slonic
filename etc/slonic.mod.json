@@ -1,0 +1,16 @@
+{
+    "MOD_CHANNELS": ["default"],
+    "INTERVAL": 10,
+    "PERIOD": 3600,
+    "START_OFFSET": 0,
+    "START_TOLERANCE_INTERVAL": 60,
+    "REMOTE_SEND": 1,
+    "LOCAL_STORAGE": 0,
+    "#LOCAL_STORAGE": "save outputs of commands locally [if 1] or not save [if 0]",
+    "LOCAL_STORAGE_DIR": "perfdata",
+    "#LOCAL_STORAGE_DIR": "can be absolute (starts with /) or relative to SLONIC_VAR (without / at the start)",
+    "MOD_CHANNEL_MAX_SIZE_MB": 5,
+    "MAX_CHANNEL_DATA_BUFFER_ROWS": 10000,
+    "MOD_CHANNEL_LOCK_ATTEMPTS": 3,
+    "MOD_WAIT_BETWEEN_CHANNEL_LOCK_ATTEMPTS": 0.1
+}

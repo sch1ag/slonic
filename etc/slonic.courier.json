@@ -1,0 +1,17 @@
+{
+    "IDB_HOST"                    : "influxdb_host_or_ip",
+    "IDB_PORT"                    : 8086,
+    "IDB_DB"                      : "slonic_db",
+    "IDB_USER"                    : "slonic_user",
+    "IDB_PASSWORD"                : "slonic_password",
+    "IDB_TIMEOUT"                 : 10,
+    "IDB_CONSISTENCY"             : "all",
+    "IDB_MAX_ROWS_PER_REQ"        : 500,
+    "CHANNEL_NAME"                : "default",
+    "NO_DATA_SLEEP_INTERVAL"      : 1,
+    "#NO_DATA_SLEEP_INTERVAL"     : "sleep between try to reread channel files",
+    "SEND_DATA_INTERVAL_TARGET"   : 5,
+    "#SEND_DATA_INTERVAL_TARGET"  : "slonic will aim to send data to idb every interval in seconds",
+    "UPDATE_CHANNELS_LIST_CYCLE"  : 12,
+    "#UPDATE_CHANNELS_LIST_CYCLE" : "slonic will update input channels list according to content of CHANNELS_DIR every UPDATE_CHANNELS_LIST_CYCLE interval"
+}

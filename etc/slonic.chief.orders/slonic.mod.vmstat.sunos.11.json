@@ -1,0 +1,8 @@
+{
+        "SCRIPT"        : "slonic.mod.vmstat.sunos.11.pl",
+        "CFG_NAME"      : "slonic.mod.vmstat.sunos.11",
+        "PROFILES"      : ["default"],
+        "FORCE_SWITCH"  : "",
+        "#FORCE_SWITCH" : "on/off/any other value == not defined",
+        "CONDITION"     : "OSNAME eq SunOS & VERSION>10"
+}

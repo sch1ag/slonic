@@ -1,0 +1,24 @@
+set name=pkg.fmri value=slonic@$(SLONIC_VERS),5.11
+set name=pkg.summary value="SimpLe ONline Information Collector"
+set name=pkg.description value="SimpLe ONline Information Collector\
+designed to collect system activity information from CLI tools,\
+aggregate it and send to database."
+set name=variant.arch value=sparc value=i386
+
+group groupname=slonic gid=51091
+user username=slonic group=slonic uid=51091
+
+dir path=var/opt/slonic group=slonic owner=slonic mode=0755
+dir path=var/opt/slonic/channels group=slonic owner=slonic mode=0755
+dir path=var/opt/slonic/log group=slonic owner=slonic mode=0755
+dir path=var/opt/slonic/perfdata group=slonic owner=slonic mode=0755
+dir path=var/opt/slonic/run group=slonic owner=slonic mode=0755
+
+link path=etc/rc3.d/S99slonic target=/etc/init.d/slonic
+link path=etc/rc3.d/K01slonic target=/etc/init.d/slonic
+
+<transform dir path=opt$|etc$|etc/opt$|etc/init.d$|etc/default$|var$|var/opt$ -> edit group ^bin$ sys>
+<transform file path=etc/opt/slonic/slonic\..*\.json$ -> set preserve renamenew>
+<transform file path=etc/opt/slonic/slonic.chief.orders/.*\.json$ -> set preserve renamenew>
+<transform file path=opt/slonic/bin/.*\.pl$ -> set mode 775>
+<transform file path=opt/slonic/lib/.*\.pm$ -> set mode 775>

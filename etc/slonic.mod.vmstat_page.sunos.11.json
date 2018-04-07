@@ -1,0 +1,5 @@
+{
+    "MEASUREMENT_NAME": "vmstat_page",
+    "LOCAL_STORAGE_FILENAME": "vmstat_page",
+    "VMSTAT_PAGE"   : 1
+}

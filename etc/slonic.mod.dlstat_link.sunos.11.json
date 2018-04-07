@@ -1,0 +1,6 @@
+{
+    "MEASUREMENT_NAME": "dlstat",
+    "LOCAL_STORAGE_FILENAME": "dlstat",
+    "NET_UP_CHECK_INTERVAL": 600,
+    "NETOBJECT": "link"
+}

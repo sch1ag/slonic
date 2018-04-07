@@ -1,0 +1,10 @@
+{
+    "MEASUREMENT_NAME": "vxstat",
+    "LOCAL_STORAGE_FILENAME": "vxstat",
+    "VXOBJECTS": ["dm", "vol"],
+    "DG_IMPORTED_CHECK_INTERVAL": 600,
+    "POST_OBJECTS_STAT": 1,
+    "POST_OBJECTS_STAT_DG_RE": "",
+    "POST_OBJECTS_STAT_OBJ_RE": "",
+    "VXAGGRGRP_KEYNAME": "aggrgrp"
+}

@@ -1,0 +1,12 @@
+{
+    "VXAGGRGRP_KEYNAME": "aggrgrp",
+    "VXAGGRGRPS":
+    {
+        "all_redo_vols":
+        {
+            "OBJTYPE": "vol",
+            "DGNAME": ".*redo.*",
+            "OBJNAME": ".*redo.*"
+        } 
+    }
+}

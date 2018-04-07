@@ -1,0 +1,4 @@
+{
+    "CHANNELS_DIR"     : "channels",
+    "#CHANNELS_DIR"    : "can be absolute path (starts with /) or relative to SLONIC_VAR (without / at the start)"
+}

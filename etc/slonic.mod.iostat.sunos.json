@@ -1,0 +1,11 @@
+{
+    "MEASUREMENT_NAME": "iostat",
+    "LOCAL_STORAGE_FILENAME": "iostat",
+    "IOAGGRGRP_KEYNAME": "aggrgrp",
+    "IOAGGRGRP":
+    {
+        "ALLCTLRS": "^c[0-9]+$",
+        "ALLTAPES": "^rmt/[0-9]+",
+        "ALLDISKS": "^c[0-9]+d"
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "IDB_HOST"                    : "influxdb_host_or_ip",
+    "IDB_PORT"                    : 8086,
+    "IDB_DB"                      : "slonic_db",
+    "IDB_USER"                    : "slonic_user",
+    "IDB_PASSWORD"                : "slonic_password"
+}

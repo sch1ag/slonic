@@ -1,0 +1,20 @@
+SLONIC_HOME=/opt/slonic
+export SLONIC_HOME
+
+SLONIC_ETC=/etc/opt/slonic
+export SLONIC_ETC
+
+SLONIC_VAR=/var/opt/slonic
+export SLONIC_VAR
+
+SLONIC_CHIEF_PIDFILE=/var/opt/slonic/run/slonic.chief.pid
+export SLONIC_CHIEF_PIDFILE
+
+SLONIC_LOGFILE=/var/opt/slonic/log/slonic.log
+export SLONIC_LOGFILE
+
+SLONIC_USER=slonic
+export SLONIC_USER
+
+SLONIC_GROUP=slonic
+export SLONIC_GROUP
