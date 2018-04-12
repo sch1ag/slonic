@@ -17,8 +17,6 @@ for CPDIR in $PROTO_CPDIRS; do
   cp -r $CPDIR $DESTDIR/opt/slonic
 done
 
-rm ${DESTDIR}/opt/slonic/bin/test*.pl
-
 cp extra/etc_samples/*.json $DESTDIR/etc/opt/slonic
 
 exit 0
