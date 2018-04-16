@@ -103,7 +103,10 @@ sub _write_data_to_db {
         }
         else #Any other status code - wait for some time and retry
         {
-            $log->warning("Attempt $attempt to write data to DB was unsuccessful. Status is: $response->{status} . Reason is: $response->{reason} .  Content is: $response->{content} . Still trying."); 
+            if ($attempt<10 or not $attempt%120)
+            {
+                $log->warning("Attempt $attempt to write data to DB was unsuccessful. Status is: $response->{status} . Reason is: $response->{reason} .  Content is: $response->{content} . Still trying."); 
+            }
             sleep $self->{HTTP_TIMEOUT};
         }
 
