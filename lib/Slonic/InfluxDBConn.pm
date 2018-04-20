@@ -37,6 +37,8 @@ sub new {
     $self->{HTTP_KEEP_ALIVE} = (defined $params_ref->{http_keep_alive}) ? $params_ref->{http_keep_alive} : 1;
     $self->{HTTP_TIMEOUT} = (defined $params_ref->{http_timeout}) ? $params_ref->{http_timeout} : 10;
 
+    $self->{NATTEMPT_LOGWARN} = sprintf("%d", 1800/$self->{HTTP_TIMEOUT});
+
     #HTTP::Tiny object
     $self->{HTTP_CONN} = HTTP::Tiny->new((keep_alive => $self->{HTTP_KEEP_ALIVE}, timeout=>$self->{HTTP_TIMEOUT}));
 
@@ -105,7 +107,7 @@ sub _write_data_to_db {
         {
             my $logmsg = "Attempt $attempt to write data to DB was unsuccessful. Status is: $response->{status} . Reason is: $response->{reason} .  Content is: $response->{content} . Still trying.";
             #Log warning first 5 times and every half hour. In all other cases log debug.
-            if ($attempt<=5 or not ($attempt%(1800/$self->{HTTP_TIMEOUT})))
+            if ($attempt<=5 or not ($attempt % $self->{NATTEMPT_LOGWARN}))
             {
                 $log->warning($logmsg);
             }
