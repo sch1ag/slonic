@@ -46,8 +46,10 @@ my @orders;
 for my $order_file (@orders_files)
 {
     my $obj = Slonic::ChiefOrder->new($CONF, $order_file, $osdata);
-    $obj->start();
-    push(@orders, $obj);
+    if ($obj->start())
+    {
+        push(@orders, $obj);
+    }
 }
 
 my $run=1;

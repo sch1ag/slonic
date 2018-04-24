@@ -86,10 +86,16 @@ sub _update_cfg {
 
 sub start {
     my $self = shift;
+    my $ret = 0;
 
-    my $abspath = join('/', $self->{CONF}->{SLONIC_HOME}, "bin", $self->{START_CFG}{SCRIPT});
-    my $command = $abspath." ".$self->{START_CFG}{CFG_NAME};
-    $self->{PROC} = Proc::Background->new($command);
+    if ($self->{DOSTART})
+    {
+        my $abspath = join('/', $self->{CONF}->{SLONIC_HOME}, "bin", $self->{START_CFG}{SCRIPT});
+        my $command = $abspath." ".$self->{START_CFG}{CFG_NAME};
+        $self->{PROC} = Proc::Background->new($command);
+        $ret = 1;
+    }
+    return $ret;
 }
 
 sub check {
