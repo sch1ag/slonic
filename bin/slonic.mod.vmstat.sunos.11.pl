@@ -97,7 +97,7 @@ my $do_remote_send=check_remote_send($CONF);
 
 while ($run)
 {
-    my $count=getruncount($CONF->{'PERIOD'}, $CONF->{'INTERVAL'}, $CONF->{'START_OFFSET'}, $CONF->{'START_TOLERANCE_INTERVAL'});
+    my $count=getruncount($CONF->{'PERIOD'}, $CONF->{'INTERVAL'}, $CONF->{'START_OFFSET'}, $CONF->{'START_TOLERANCE_INTERVAL'})+1;
     $outfilemgr->newfile($CONF->{LOCAL_STORAGE_FILENAME}."_".$CONF->{'INTERVAL'}."_".$count);
     my $CMD="/usr/bin/vmstat $vmstat_page_opt -T d $CONF->{'INTERVAL'} $count |";
     open (my $CMDOUT, $CMD) or die $log->fatal("Couldn't open $CMD for reading: $!");
