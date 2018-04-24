@@ -75,7 +75,7 @@ while ($run)
 
         if (my ($scall, $sread, $swrit, $fork, $exec, $rchar, $wchar) = ($line =~ /^\s*(\d+)\s+(\d+)\s+(\d+)\s+(\d+\.\d+)\s+(\d+\.\d+)\s+(\d+)\s+(\d+)\s*/))
         {
-            $data_href->{'call/s'} = $scall;
+            $data_href->{'scall/s'} = $scall;
             $data_href->{'sread/s'} = $sread;
             $data_href->{'swrit/s'} = $swrit;
             $data_href->{'fork/s'} = $fork;
