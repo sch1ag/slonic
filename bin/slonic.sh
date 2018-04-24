@@ -17,8 +17,8 @@ fi
 . ${SLONIC_HOME}/etc/slonic.env
 
 #check that needed env vars are defined (see ${SLONIC_HOME}/etc/slonic.env)
-if [ -z "${SLONIC_ETC}" -o -z "${SLONIC_VAR}" -o -z "${SLONIC_CHIEF_PIDFILE}" -o -z "${SLONIC_LOGFILE}" ] ; then
-    echo <<EOF "Env vars SLONIC_ETC, SLONIC_VAR, SLONIC_CHIEF_PIDFILE, SLONIC_LOGFILE must be defined.
+if [ -z "${SLONIC_ETC}" -o -z "${SLONIC_VAR}" -o -z "${SLONIC_CHIEF_PIDFILE}" -o -z "${SLONIC_STARTER_LOGFILE}" ] ; then
+    echo <<EOF "Env vars SLONIC_ETC, SLONIC_VAR, SLONIC_CHIEF_PIDFILE, SLONIC_STARTER_LOGFILE must be defined.
 Normally they are defined in ${SLONIC_HOME}/etc/slonic.env file."
 EOF
     exit 1
@@ -41,15 +41,15 @@ case "$1" in
             export SLONIC_TAG_hostid
 
             #check for writable log file
-            touch ${SLONIC_LOGFILE}
-            chmod +w ${SLONIC_LOGFILE}
+            touch ${SLONIC_STARTER_LOGFILE}
+            chmod +w ${SLONIC_STARTER_LOGFILE}
 
             #limit memory usage to 100MiB by one process 
             ulimit -v 102400
             ulimit -Hv 102400
 
-            #run slonic chief itself
-            perl ${SLONIC_HOME}/bin/slonic.chief.pl > ${SLONIC_LOGFILE} 2>&1
+            #run slonic starter that will start chief daemon itself
+            perl ${SLONIC_HOME}/bin/slonic.starter.pl > ${SLONIC_STARTER_LOGFILE} 2>&1
         fi
         ;;
   stop)
