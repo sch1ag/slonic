@@ -13,11 +13,11 @@ At this time only Solaris 11 with limited numbers of utilities is supported:
 * sar (-mvc)
 
 ## Building ips package for Solaris 11  
-git clone https://github.com/sch1ag/slonic.git  
-cd slonic/  
-./sunos11_mkproto.sh  
-./sunos11_mkproto.sh  
-./sunos11_buildpkg.sh  
+> git clone https://github.com/sch1ag/slonic.git  
+> cd slonic/  
+> ./sunos11_mkproto.sh  
+> ./sunos11_mkproto.sh  
+> ./sunos11_buildpkg.sh  
 
 sunos11_buildpkg.sh must be executed on Solaris 11 (x86 or SPARC)  
 After that you will get to slonic.p5p that can be installed on Solaris 11 (it will run normally on booth x86 and SPARC) using pkg system  
