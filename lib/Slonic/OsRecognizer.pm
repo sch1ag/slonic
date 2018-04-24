@@ -45,7 +45,12 @@ sub get_os_type {
     }
     elsif ($osname eq "SunOS")
     {
-        ($osdata{'VERSION'}, $osdata{'RELEASE'}) = split('\.', $version);
+        ($osdata{'VERSION'}) = ($release =~ /5\.(\d+)/);
+        $osdata{'RELEASE'} = 0;
+        if ($osdata{'VERSION'} == 11 && $version =~ /11\.(\d+)/)
+        {
+            ($osdata{'RELEASE'}) = ($version =~ /11\.(\d+)/);
+        }
     }
     elsif ($osname eq "Linux")
     {
