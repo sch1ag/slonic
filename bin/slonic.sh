@@ -5,11 +5,21 @@ PATH=/bin:/usr/bin:/sbin:/usr/sbin:${PATH}
 #check for perl
 which perl > /dev/null 2>&1 || exit 0
 
-#check that needed env vars are defined (see /etc/default/slonic)
-if [ -z "${SLONIC_HOME}" -o -z "${SLONIC_ETC}" -o -z "${SLONIC_VAR}" -o -z "${SLONIC_CHIEF_PIDFILE}" -o -z "${SLONIC_LOGFILE}" ] ; then
+#check for SLONIC_HOME var (see /etc/default/slonic)
+if [ -z "${SLONIC_HOME}" ]; then
+    echo <<EOF "Env var SLONIC_HOME must be defined.
+Normally $0 script started by init sybsystem (for example /etc/init.d/slonic)
+which export SLONIC_HOME somehow (for example by sourcing /etc/default/slonic file)"
+EOF
+    exit 1
+fi
 
-    echo <<EOF "Env vars SLONIC_HOME, SLONIC_ETC, SLONIC_VAR, SLONIC_CHIEF_PIDFILE, SLONIC_LOGFILE must be defined.
-Normally $0 script started by init sybsystem from /etc/init.d/slonic which sources /etc/default/slonic file where vars are defined."
+. ${SLONIC_HOME}/etc/slonic.env
+
+#check that needed env vars are defined (see ${SLONIC_HOME}/etc/slonic.env)
+if [ -z "${SLONIC_ETC}" -o -z "${SLONIC_VAR}" -o -z "${SLONIC_CHIEF_PIDFILE}" -o -z "${SLONIC_LOGFILE}" ] ; then
+    echo <<EOF "Env vars SLONIC_ETC, SLONIC_VAR, SLONIC_CHIEF_PIDFILE, SLONIC_LOGFILE must be defined.
+Normally they are defined in ${SLONIC_HOME}/etc/slonic.env file."
 EOF
     exit 1
 fi
