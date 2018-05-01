@@ -19,7 +19,7 @@ At this time only Solaris 11 with limited numbers of utilities is supported:
 > ./sunos11_buildpkg.sh  
 
 sunos11_buildpkg.sh must be executed on Solaris 11 (x86 or SPARC)  
-After that you will get to slonic.p5p that can be installed on Solaris 11 (it will run normally on booth x86 and SPARC) using pkg system  
+After that you will get slonic.p5p that can be installed on Solaris 11 (it will run normally on booth x86 and SPARC) using pkg system  
   
 > pkg install -g slonic.p5p slonic  
 
