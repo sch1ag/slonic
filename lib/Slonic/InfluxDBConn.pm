@@ -32,7 +32,6 @@ sub new {
     $self->{IDB_PASSWORD} = (defined $params_ref->{idb_password}) ? $params_ref->{idb_password} : '';
     $self->{IDB_CONSISTENCY} = (defined $params_ref->{idb_consistency}) ? $params_ref->{idb_consistency} : 'all';
     $self->{IDB_PRECISION} = (defined $params_ref->{idb_precision}) ? $params_ref->{idb_precision} : '';
-    $self->{IDB_MAX_ROWS_PER_REQ} = (defined $params_ref->{idb_max_rows_per_req}) ? $params_ref->{idb_max_rows_per_req} : 500;
 
     $self->{HTTP_KEEP_ALIVE} = (defined $params_ref->{http_keep_alive}) ? $params_ref->{http_keep_alive} : 1;
     $self->{HTTP_TIMEOUT} = (defined $params_ref->{http_timeout}) ? $params_ref->{http_timeout} : 10;
@@ -58,22 +57,11 @@ sub write_data {
     my ($self, $dataref)=@_;
 
     my $elemcount = scalar @{$dataref};
-    $log->debug("Going to write $elemcount lines to db by groups of $self->{IDB_MAX_ROWS_PER_REQ} max.");
+    $log->debug("Going to write $elemcount lines to db.");
 
-    my @strings_array;
-
-    for (my $curelem=0; $curelem<$elemcount; $curelem++)
+    if ($elemcount > 0)
     {
-        push(@strings_array, $dataref->[$curelem]);
-        if (scalar @strings_array >= $self->{IDB_MAX_ROWS_PER_REQ})
-        {
-            $self->_write_data_to_db(\@strings_array);
-            @strings_array=();
-        }
-    }
-    if (scalar @strings_array > 0)
-    {
-        $self->_write_data_to_db(\@strings_array);
+        $self->_write_data_to_db($dataref);
     } 
 }
 

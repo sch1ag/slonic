@@ -15,6 +15,8 @@ use Slonic::Utils qw( select_abs_path );
 use Slonic::SafeFileChannel;
 use Slonic::InfluxDBConn;
 use Slonic::Config;
+use Slonic::ElementDispenser;
+
 use Data::Dumper;
 
 use Carp qw(croak);
@@ -41,13 +43,14 @@ my $idbconn = Slonic::InfluxDBConn->new(
                                                 idb_password => $CONF->{'IDB_PASSWORD'},
                                                 idb_precision => 's',
                                                 idb_consistency => $CONF->{'IDB_CONSISTENCY'},
-                                                idb_max_rows_per_req => $CONF->{'IDB_MAX_ROWS_PER_REQ'},
                                                 http_keep_alive => 1,
                                                 http_timeout => $CONF->{'IDB_TIMEOUT'}
                                            }
                                        );
 
-my @data;
+#prepare ElementDispenser to group lines from channels to bunches of reasonable for IDB size
+my $linesdispenser = Slonic::ElementDispenser->new({'recipient' => sub { $idbconn->write_data(@_) }, 'portion' => $CONF->{'IDB_MAX_ROWS_PER_REQ'}});
+
 my @sfc_chans;
 
 my $wait_time=$CONF->{SEND_DATA_INTERVAL_TARGET}*2;
@@ -69,30 +72,18 @@ while ($run){
     }
     $sfc_chans_update_counter++;
 
-    for my $sfc_chan (@sfc_chans) {
-        my $dataref_from_chan=$sfc_chan->read_and_trunc();
-        if (defined $dataref_from_chan)
-        {
-            my $number_of_lines=scalar @{$dataref_from_chan};
-            $log->debug("Got $number_of_lines lines from $sfc_chan->{'FILENAME'}");
+    for my $sfc_chan (@sfc_chans)
+    {
+        my $dataref_from_chan = $sfc_chan->read_and_trunc();
 
-            #do not accumulate data if recieved from channel number of lines equal to IDB_MAX_ROWS_PER_REQ or more 
-            if($number_of_lines>=$CONF->{'IDB_MAX_ROWS_PER_REQ'})
-            {
-                $idbconn->write_data($dataref_from_chan);
-            }
-            else
-            {
-                push (@data, @{$dataref_from_chan});
-            }
-        }
+        my $ch_number_of_lines = scalar @{$dataref_from_chan};
+        $log->debug("Got $ch_number_of_lines lines from $sfc_chan->{'FILENAME'}");
+
+        $linesdispenser->add_elements($dataref_from_chan);
     }
 
-    if (@data){
-        $idbconn->write_data(\@data);
-        @data=();
-    }
-    
+    $linesdispenser->flush_buffer();
+
     $cycle_time=time()-$start_time;
     $wait_time=($cycle_time<$CONF->{SEND_DATA_INTERVAL_TARGET})?$CONF->{SEND_DATA_INTERVAL_TARGET}-$cycle_time:0;
 }
