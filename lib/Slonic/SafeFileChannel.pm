@@ -136,10 +136,10 @@ sub append {
 }
 
 #Check size. If non zero: try to lock file (with retry), read all data and truncate file.
-#user: daemon
+#user: courier
 sub read_and_trunc {
     my $self = shift;
-    my $dataref;
+    my $dataref = [];
 
     if (-e $self->{FILENAME} && -s $self->{FILENAME})
     {
