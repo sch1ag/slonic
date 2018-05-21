@@ -72,14 +72,20 @@ while ($run){
     }
     $sfc_chans_update_counter++;
 
-    for my $sfc_chan (@sfc_chans)
+    my $channels_has_data = 1;
+    while ($channels_has_data > 0) 
     {
-        my $dataref_from_chan = $sfc_chan->read_and_trunc();
+        $channels_has_data = 0;
+        for my $sfc_chan (@sfc_chans)
+        {
+            my ($dataref_from_chan, $has_more_data) = $sfc_chan->read_part_and_truncate_if_no_more_data($CONF->{CHANNEL_READ_PORTION});
 
-        my $ch_number_of_lines = scalar @{$dataref_from_chan};
-        $log->debug("Got $ch_number_of_lines lines from $sfc_chan->{'FILENAME'}");
+            $log->debug("Got " . @{$dataref_from_chan} . " lines from $sfc_chan->{'FILENAME'}");
 
-        $linesdispenser->add_elements($dataref_from_chan);
+            $channels_has_data += $has_more_data;
+    
+            $linesdispenser->add_elements($dataref_from_chan);
+        }
     }
 
     $linesdispenser->flush_buffer();

@@ -36,6 +36,9 @@ sub new {
     $self->{FILEFH} = undef;
     $self->{LOCKED} = 0;
 
+    $self->{FIRST_LINE_OF_FILE} = "";
+    $self->{'FIRST_UNREAD_LINE_NUM'} = 0;
+
     bless($self, $class);
     return $self;
 }
@@ -90,18 +93,39 @@ sub _append {
     return $i;
 }
 
-sub _read {
+sub _read_next_portion {
     my $self = shift;
+    my $maxread = shift;
 
     my @data;
 
     my $fh;
     open ($fh, '<', $self->{FILENAME}) or croak $log->fatal("Couldn't open $self->{FILENAME} : $!");
 
-    while (my $rline = <$fh>){
-        chomp $rline;
-        push(@data, $rline);
+    my $curent_line_number = 0;
+    while (my $rline = <$fh>)
+    {
+        if ($curent_line_number == 0 and $self->{'FIRST_LINE_OF_FILE'} ne $rline) #file was rewrited
+        {
+            $self->{'FIRST_LINE_OF_FILE'} = $rline;
+            $self->{'FIRST_UNREAD_LINE_NUM'} = 0;
+        }
+        if ($curent_line_number >= $self->{'FIRST_UNREAD_LINE_NUM'}) 
+        {
+            if (@data < $maxread or $maxread == 0)
+            {
+                chomp $rline;
+                push(@data, $rline);
+            }
+            else
+            {
+                $self->{'FIRST_UNREAD_LINE_NUM'} = $curent_line_number;
+                last;
+            }
+        }
+        $curent_line_number++;
     }
+
     close($fh);
 
     return \@data;
@@ -135,21 +159,31 @@ sub append {
     return $ret;
 }
 
-#Check size. If non zero: try to lock file (with retry), read all data and truncate file.
+#Check size, if non zero: try to lock file (with retry), read $maxread lines, return lines and $has_more_data.
+#Set $has_more_data to 0 and truncate file if last lines of file were returned.
 #user: courier
-sub read_and_trunc {
+sub read_part_and_truncate_if_no_more_data
+{
     my $self = shift;
+    my $maxread = shift;
+    $maxread = 0 if not defined $maxread;
     my $dataref = [];
+    my $has_more_data = 0;
 
     if (-e $self->{FILENAME} && -s $self->{FILENAME})
     {
         if ($self->_lock()){
-            $dataref=$self->_read();
-            $self->_trunc();
+            $has_more_data = 1;
+            $dataref=$self->_read_next_portion($maxread);
+            if (@{$dataref} < $maxread or $maxread == 0)
+            {
+                $self->_trunc();
+                $has_more_data = 0;
+            }
             $self->_unlock();
         }
     }
-    return $dataref;
+    return ($dataref, $has_more_data);
 }
 
 #Lock file and check it size. If zero - delete file and its lockfile. Unlock file. 

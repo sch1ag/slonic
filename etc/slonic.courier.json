@@ -8,6 +8,7 @@
     "IDB_CONSISTENCY"             : "all",
     "IDB_MAX_ROWS_PER_REQ"        : 500,
     "CHANNEL_NAME"                : "default",
+    "CHANNEL_READ_PORTION"        : 10000,
     "NO_DATA_SLEEP_INTERVAL"      : 1,
     "#NO_DATA_SLEEP_INTERVAL"     : "sleep between try to reread channel files",
     "SEND_DATA_INTERVAL_TARGET"   : 5,
