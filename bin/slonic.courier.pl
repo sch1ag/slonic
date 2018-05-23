@@ -8,7 +8,6 @@ use warnings;
 our $VERSION = '1.0.0';
 
 use IO::Select;
-use Time::HiRes qw( time );
 use FindBin qw($Bin);
 use lib "$Bin/../lib";
 use Slonic::Utils qw( select_abs_path );
