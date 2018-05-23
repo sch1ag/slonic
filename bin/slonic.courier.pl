@@ -16,6 +16,7 @@ use Slonic::SafeFileChannel;
 use Slonic::InfluxDBConn;
 use Slonic::Config;
 use Slonic::ElementDispenser;
+use Slonic::Sleepyhead;
 
 use Data::Dumper;
 
@@ -52,18 +53,14 @@ my $idbconn = Slonic::InfluxDBConn->new(
 my $linesdispenser = Slonic::ElementDispenser->new({'recipient' => sub { $idbconn->write_data(@_) }, 'portion' => $CONF->{'IDB_MAX_ROWS_PER_REQ'}});
 
 my @sfc_chans;
-
-my $wait_time=$CONF->{SEND_DATA_INTERVAL_TARGET}*2;
-my $cycle_time=0;
-my $start_time=0;
-
 my $sfc_chans_update_counter=$CONF->{'UPDATE_CHANNELS_LIST_CYCLE'};
+
+my $sleepyhead = Slonic::Sleepyhead->new($CONF->{'SEND_DATA_INTERVAL_TARGET'});
+$sleepyhead->sleep_rest_of_cycle();
 
 #read all data from all channels and post it to idb
 while ($run){
-    $log->debug("Now ".time()." Going to wait $wait_time.");
-    select(undef, undef, undef, $wait_time);
-    my $start_time=time();
+    $sleepyhead->sleep_rest_of_cycle();
 
     #Create/update SafeFileChannel objects
     if($sfc_chans_update_counter == $CONF->{'UPDATE_CHANNELS_LIST_CYCLE'}){
@@ -89,9 +86,6 @@ while ($run){
     }
 
     $linesdispenser->flush_buffer();
-
-    $cycle_time=time()-$start_time;
-    $wait_time=($cycle_time<$CONF->{SEND_DATA_INTERVAL_TARGET})?$CONF->{SEND_DATA_INTERVAL_TARGET}-$cycle_time:0;
 }
 
 exit(0);
