@@ -1,0 +1,2 @@
+<transform depend fmri=pkg:/runtime/perl-512 -> set fmri pkg:/runtime/perl-512>
+<transform depend fmri=pkg:/shell/ksh93 -> set fmri pkg:/shell/ksh93>

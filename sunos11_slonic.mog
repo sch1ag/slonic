@@ -1,4 +1,4 @@
-set name=pkg.fmri value=slonic@$(SLONIC_VERS),5.11
+set name=pkg.fmri value=slonic@$(PKG_VERS),5.11
 set name=pkg.summary value="SimpLe ONline Information Collector"
 set name=pkg.description value="SimpLe ONline Information Collector\
 designed to collect system activity information from CLI tools,\
