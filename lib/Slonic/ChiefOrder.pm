@@ -4,10 +4,10 @@ use vars;
 use strict;
 use warnings;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use Carp qw(croak);
-use Slonic::Utils qw(read_json_from_file);
+use Slonic::Utils qw(read_json_from_file check_true check_false);
 use Slonic::CondChecker qw(check_condition);
 use Proc::Background;
 use Data::Dumper;
@@ -40,12 +40,12 @@ sub _check_start_cond {
     my $self = shift;
     my $chief_profiles = shift;
 
-    if (exists $self->{START_CFG}{FORCE_SWITCH}) {
-        if ($self->{START_CFG}{FORCE_SWITCH} eq "1")
+    if (exists $self->{'START_CFG'}{'FORCE_SWITCH'}) {
+        if (check_true($self->{'START_CFG'}{'FORCE_SWITCH'}))
         {
             return 1;
         }
-        elsif ($self->{START_CFG}{FORCE_SWITCH} eq "0")
+        elsif (check_false($self->{'START_CFG'}{'FORCE_SWITCH'}))
         {
             return 0;
         }
