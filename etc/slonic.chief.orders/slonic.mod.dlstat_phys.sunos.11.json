@@ -3,6 +3,5 @@
         "CFG_NAME"      : "slonic.mod.dlstat_phys.sunos.11.json",
         "PROFILES"      : ["default"],
         "FORCE_SWITCH"  : "",
-        "#FORCE_SWITCH" : "on/off/any other value == not defined",
         "CONDITION"     : "OSNAME eq SunOS & VERSION>10"
 }

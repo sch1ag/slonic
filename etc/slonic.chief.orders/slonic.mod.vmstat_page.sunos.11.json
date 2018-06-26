@@ -3,6 +3,5 @@
         "CFG_NAME"      : "slonic.mod.vmstat_page.sunos.11",
         "PROFILES"      : ["default"],
         "FORCE_SWITCH"  : "",
-        "#FORCE_SWITCH" : "on/off/any other value == not defined",
         "CONDITION"     : "OSNAME eq SunOS & VERSION>10"
 }
