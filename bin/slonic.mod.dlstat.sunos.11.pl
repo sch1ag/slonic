@@ -3,7 +3,7 @@ use vars;
 use strict;
 use warnings;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use File::Basename;
 use IO::Handle;
@@ -84,7 +84,7 @@ while ($run)
 
         chomp $line;
 
-        if(my ($linkname, $in_pkts_per_sec, $in_bytes_per_sec, $out_pkts_per_sec, $out_bytes_per_sec)=($line=~/^\s*(\w+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)/))
+        if(my ($linkname, $in_pkts_per_sec, $in_bytes_per_sec, $out_pkts_per_sec, $out_bytes_per_sec)=($line=~/^\s*([\w\-\.]+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)/))
         {
             #printf("$line\n");
             if($snapnumber>1)
@@ -141,14 +141,14 @@ sub get_up_net_dev
         chomp $line;
 
         my ($linkname, $mediatype, $linkstate, $linkspeed, $linkduplex, $devname,$class, $mtu, $over);
-        if (($linkname, $mediatype, $linkstate, $linkspeed, $linkduplex, $devname) = ($line=~/^(\w+)\s+(\w+)\s+(\w+)\s+(\d+)\s+(\w+)\s+(\w+)/))
+        if (($linkname, $mediatype, $linkstate, $linkspeed, $linkduplex, $devname) = ($line=~/^([\w\-\.]+)\s+([\w\-\.]+)\s+([\w\-\.]+)\s+(\d+)\s+([\w\-\.]+)\s+([\w\-\.]+)/))
         {
             if ($linkstate eq "up")
             {
                 $up_net_dev{$linkname}={'linkname'=>$linkname, 'mediatype'=>$mediatype, 'linkspeed'=>$linkspeed, 'devname'=>$devname};
             }
         }
-        elsif (($linkname, $class, $mtu, $linkstate, $over) = ($line=~/^(\w+)\s+(\w+)\s+(\d+)\s+(\w+)\s+([-\w]+)\s*$/))
+        elsif (($linkname, $class, $mtu, $linkstate, $over) = ($line=~/^([\w\-\.]+)\s+([\w\-\.]+)\s+(\d+)\s+([\w\-\.]+)\s+([-[\w\-\.]]+)\s*$/))
         {
             if ($linkstate eq "up")
             {
