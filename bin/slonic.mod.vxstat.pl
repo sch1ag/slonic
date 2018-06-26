@@ -3,7 +3,7 @@ use vars;
 use strict;
 use warnings;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use File::Basename;
 use IO::Handle;
@@ -107,7 +107,7 @@ while ($run)
 
         chomp $line;
 
-        if(my ($objtype, $objname, $read_iops, $write_iops, $read_kbps, $write_kbps, $read_srv_ms, $write_srv_ms) = ($line=~/^(dm|sd|pl|vol)\s+(\w+)\s+(\d+)\s+(\d+)\s+(\d+)k\s+(\d+)k\s+(\d+\.\d+)\s+(\d+\.\d+)/))
+        if(my ($objtype, $objname, $read_iops, $write_iops, $read_kbps, $write_kbps, $read_srv_ms, $write_srv_ms) = ($line=~/^(dm|sd|pl|vol)\s+([\w\.\-]+)\s+(\d+)\s+(\d+)\s+(\d+)k\s+(\d+)k\s+(\d+\.\d+)\s+(\d+\.\d+)/))
         {
             #printf("$line\n");
             if($snapnumber>1)
@@ -124,7 +124,7 @@ while ($run)
             }
             $blankline=0;
         }
-        elsif ($line =~ /^DG\s+(\w+)/)
+        elsif ($line =~ /^DG\s+([\w\.\-]+)/)
         {
             $dgname = $1;
             $blankline=0;
