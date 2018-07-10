@@ -109,8 +109,9 @@ while ($run)
 
         if(my ($objtype, $objname, $read_iops, $write_iops, $read_kbps, $write_kbps, $read_srv_ms, $write_srv_ms) = ($line=~/^(dm|sd|pl|vol)\s+([\w\.\-]+)\s+(\d+)\s+(\d+)\s+(\d+)k\s+(\d+)k\s+(\d+\.\d+)\s+(\d+\.\d+)/))
         {
-            #printf("$line\n");
-            if($snapnumber>1)
+            #save data of the line if current snapshot is not the first (historical) output of vxstat 
+            #data of the line also will be skipped in case of unbelievable high iops (strange vxstat behavior during dg deport)
+            if($snapnumber>1 && $read_iops <= $CONF->{'MAX_POSSIBLE_IOPS'} && $write_iops <= $CONF->{'MAX_POSSIBLE_IOPS'})
             {
                 #store data for aggregations
                 storefields($data_href, $dgname, $objtype, $objname, $read_iops, $write_iops, $read_kbps, $write_kbps, $read_srv_ms, $write_srv_ms);
