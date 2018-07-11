@@ -19,6 +19,8 @@ use Slonic::Utils qw(trim select_abs_path getruncount strdt2unix check_remote_se
 use Slonic::LocalStorageMgr;
 use Slonic::M2DChannel;
 use Slonic::Config;
+use Slonic::Sleepyhead;
+
 use Carp qw(croak);
 
 use Log::Any qw($log);
@@ -67,6 +69,10 @@ unless (-d $dgdevdir)
 my $objopt=join("", "-", map(substr($_,0,1), @{$CONF->{'VXOBJECTS'}}));
 
 my $do_remote_send=check_remote_send($CONF);
+
+#next two lines initialize vars for preventing too fast cmd restart (when vxconfigd died, for example)
+my $cmd_exit_counter = 0;
+my $too_fast_cmd_exit_control = Slonic::Sleepyhead->new($CONF->{'MIN_TIME_FOR_10_CMD'});
 
 while ($run)
 {
@@ -157,6 +163,17 @@ while ($run)
         }
     }
     close $CMDOUT;
+    $cmd_exited_counter++;
+
+    #Checking that the last 10 executions of vxstat took MIN_TIME_FOR_10_CMD seconds as a minimum. If it took less - wait the rest of time here.
+    if ($cmd_exit_counter % 10 == 0)
+    {
+        my $sleep_time = $too_fast_cmd_exit_control->sleep_rest_of_cycle();
+        if ($sleep_time != 0)
+        {
+            $log->notice("Command vxstat has been exited and restarted 10 times in period with duration no more than $CONF->{'MIN_TIME_FOR_10_CMD'} seconds.");
+        }
+    }
 }
 
 sub add_data2send
