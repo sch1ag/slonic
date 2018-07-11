@@ -31,6 +31,7 @@ sub sleep_rest_of_cycle
     $log->debug("Cycle with target duration of $target_cycle_duration seconds takes $already_spend_time to complete. Will go to sleep for $sleep_time seconds.");
     sleep $sleep_time;
     $self->{'CYCLE_START_TIME'} = time();
+    return $sleep_time;
 }
 
 1;
