@@ -3,7 +3,7 @@ use vars;
 use strict;
 use warnings;
 
-our $VERSION = '1.0.1';
+our $VERSION = '1.0.2';
 
 use File::Basename;
 use IO::Handle;
@@ -59,9 +59,9 @@ for my $vxcmd ($vxstat)
     }
 }
 
-#check that vx device dir is exist
-my $dgdevdir="/dev/vx/dsk";
-unless (-d $dgdevdir)
+#check for imported DGs
+my $dgcount = get_dgs_count();
+if ($dgcount == -1)
 {
     croak($log->notice("Looks like VxVM is not configured on this host. Exiting."));
 }
@@ -76,19 +76,11 @@ my $too_fast_cmd_exit_control = Slonic::Sleepyhead->new($CONF->{'MIN_TIME_FOR_10
 
 while ($run)
 {
-    #check for imported DGs
-    opendir(my $dh, $dgdevdir) || croak $log->fatal("Could not opendir $dgdevdir to check imported DGs: $!");
-    my @dirents = readdir($dh);
-    closedir $dh;
-
-    #dgs is imported if numbers of entitys is more than 2 (not only . and ..)
-    until (scalar @dirents>2)
+    until ($dgcount > 0)
     {
         $log->debug("No vx disk droups imported yet. Will check every $CONF->{'DG_IMPORTED_CHECK_INTERVAL'} seconds.");
         sleep $CONF->{'DG_IMPORTED_CHECK_INTERVAL'};
-        opendir(my $dh, $dgdevdir) || croak $log->fatal("Can opendir $dgdevdir to check imported DGs: $!");
-        @dirents = readdir($dh);
-        closedir $dh;
+        $dgcount = get_dgs_count();
     }
 
     my $count=getruncount($CONF->{'PERIOD'}, $CONF->{'INTERVAL'}, $CONF->{'START_OFFSET'}, $CONF->{'START_TOLERANCE_INTERVAL'});
@@ -155,6 +147,17 @@ while ($run)
                 
                 $data_href={};
                 $data2send=[];
+
+                #every 10 iterations check for imported/deported DGs. Restart vxstat if number of imported DGs has changed.
+                if ($snapnumber % 10 == 0)
+                {
+                    my $new_dgcount = get_dgs_count();
+                    if ($new_dgcount != $dgcount)
+                    {
+                        $dgcount = $new_dgcount;
+                        last;
+                    }
+                }
             }
             else
             {
@@ -163,7 +166,7 @@ while ($run)
         }
     }
     close $CMDOUT;
-    $cmd_exited_counter++;
+    $cmd_exit_counter++;
 
     #Checking that the last 10 executions of vxstat took MIN_TIME_FOR_10_CMD seconds as a minimum. If it took less - wait the rest of time here.
     if ($cmd_exit_counter % 10 == 0)
@@ -297,6 +300,22 @@ sub calc_and_add_aggr_data
         }
     } 
 
+}
+
+sub get_dgs_count
+{
+    my $dgdevdir = '/dev/vx/dsk';
+    my $dgcount = -1;
+    if (-d $dgdevdir)
+    {
+        opendir(my $dh, $dgdevdir) || croak $log->fatal("Could not opendir $dgdevdir to check imported DGs: $!");
+        my @dirents = readdir($dh);
+        closedir $dh;
+        #exclude . and ..
+        $dgcount = @dirents - 2;
+    }
+
+    return $dgcount;
 }
 
 exit(0);
