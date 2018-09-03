@@ -51,7 +51,7 @@ while ($run)
     open (my $CMDOUT, $CMD) or die $log->fatal("Couldn't open $CMD for reading: $!");
 
     my $day_href = {};
-    my $prevhours = 0;
+    my $prevhours = 23;
     my $data_href = {};
 
     while (my $line=<$CMDOUT>) 
