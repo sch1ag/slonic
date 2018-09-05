@@ -3,7 +3,7 @@ use vars;
 use strict;
 use warnings;
 
-our $VERSION = '1.0.1';
+our $VERSION = '1.0.2';
 
 use File::Basename;
 use IO::Handle;
@@ -148,7 +148,7 @@ sub get_up_net_dev
                 $up_net_dev{$linkname}={'linkname'=>$linkname, 'mediatype'=>$mediatype, 'linkspeed'=>$linkspeed, 'devname'=>$devname};
             }
         }
-        elsif (($linkname, $class, $mtu, $linkstate, $over) = ($line=~/^([\w\-\.]+)\s+([\w\-\.]+)\s+(\d+)\s+([\w\-\.]+)\s+([-[\w\-\.]]+)\s*$/))
+        elsif (($linkname, $class, $mtu, $linkstate, $over) = ($line=~/^([\w\-\.]+)\s+([\w\-\.]+)\s+(\d+)\s+([\w\-\.]+)\s+([\w\-\.]+)\s*$/))
         {
             if ($linkstate eq "up")
             {
