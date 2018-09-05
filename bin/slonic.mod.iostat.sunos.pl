@@ -96,16 +96,18 @@ while ($run){
         elsif(scalar @fields == 11 && $fields[0] =~ '[0-9\.]+') #data line
         {
             $curdev=$fields[$name2colon{'DEVICE'}];
-	    if ($curdev =~ '^c[0-9]+$'){ #stats by controller (hardcoded)
-                #my $grpname=$curdev;
-                storefields($curdev, \@fields, \%databygrp);
+
+            for my $devgrptag (keys %{$CONF->{DEVICEGRP}}){
+                my $devgrpregx=$CONF->{DEVICEGRP}->{$devgrptag};
+                if ($curdev =~ $devgrpregx){
+                    storefields($curdev, $devgrptag, \@fields, \%databygrp);
+                }
             }
+
             for my $grpname (keys %{$CONF->{IOAGGRGRP}}){
                 my $grpregx=$CONF->{IOAGGRGRP}->{$grpname};
                 if ($curdev =~ $grpregx){
-                    #do processing
-                    #print "DEBUG: $line\n";
-                    storefields($grpname, \@fields, \%databygrp);
+                    storefields($grpname, "aggr", \@fields, \%databygrp);
                 }
             }
            
@@ -136,6 +138,9 @@ sub do_report {
         $tags{$CONF->{'IOAGGRGRP_KEYNAME'}}=$grpname;
 
         my $grpdataref=$dataref->{$grpname};
+
+        $tags{$CONF->{'DEVICEGRP_KEYNAME'}}=$grpdataref->{'Tag.devgrp'};
+
         my %vals;
         $vals{'read_io/s'}=sprintf("%.1f", $grpdataref->{'Sum.RIOpS'});
         $vals{'write_io/s'}=sprintf("%.1f",$grpdataref->{'Sum.WIOpS'});
@@ -172,6 +177,7 @@ sub do_report {
 
 sub storefields {
     my $grpname = shift;
+    my $devgrp = shift;
     my $in_fieldsref = shift;
     my $out_hashref = shift;
     #print "DEBUG: $grpname\n";
@@ -199,10 +205,14 @@ sub storefields {
             'Max.WAITTIME'=>0,
             'Max.SRVTIME'=>0,
             'Max.TOTALTIME'=>0,
+
+	    'Tag.devgrp'=>'none',
         );
 
         $out_hashref->{$grpname} = \%storetemplate;
     } 
+
+    $out_hashref->{$grpname}->{'Tag.devgrp'} = $devgrp;
 
     $out_hashref->{$grpname}->{'Tmp.NUMBERofDEVs'}++;
 

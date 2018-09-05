@@ -7,5 +7,10 @@
         "ALLCTLRS": "^c[0-9]+$",
         "ALLTAPES": "^rmt/[0-9]+",
         "ALLDISKS": "^c[0-9]+d"
+    },
+    "DEVICEGRP_KEYNAME": "devgrp",
+    "DEVICEGRP":
+    {
+        "CTLRS": "^c[0-9]+$"
     }
 }
