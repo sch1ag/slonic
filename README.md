@@ -5,7 +5,7 @@ It is a set of Perl scrips to collect operation system activity from CLI utiliti
 Slonic use Core Perl and pure Perl modules only so it can potentially run on any UNIX like OS with Perl and without necessity to compile dependencies.  
 Because of different output formats every utility on every OS requere its own "module" to parse and prepare data.  
   
-At this time only Solaris 11 with limited numbers of utilities is supported:
+At this time only Solaris 11 with limited numbers of utilities are supported:
 * vmstat
 * iostat
 * dlstat
@@ -23,3 +23,11 @@ After that you will get slonic.p5p that can be installed on Solaris 11 (it will 
   
 > pkg install -g slonic.p5p slonic  
 
+## Example of Grafana Panels
+
+![slonic-dashboard-vmstat](https://i.ibb.co/fNVv86Q/slonic-dashboard-vmstat.png)
+![slonic-dashboard-vxstat](https://i.ibb.co/1dQSRyg/slonic-dashboard-vxstat.png)
+![slonic-dashboard-iostat](https://i.ibb.co/rd5Xm5N/slonic-dashboard-iostat.png)
+![slonic-dashboard-dlstat](https://i.ibb.co/0MpFwK7/slonic-dashboard-dlstat.png)
+![slonic-dashboard-vmstat-mem](https://i.ibb.co/BV8qqx9/slonic-dashboard-vmstat-mem.png)
+![slonic-dashboard-sar](https://i.ibb.co/BZdgJND/slonic-dashboard-sar.png)
