@@ -25,9 +25,9 @@ After that you will get slonic.p5p that can be installed on Solaris 11 (it will 
 
 ## Example of Grafana Panels
 
-![slonic-dashboard-vmstat](https://i.ibb.co/fNVv86Q/slonic-dashboard-vmstat.png)
-![slonic-dashboard-vxstat](https://i.ibb.co/1dQSRyg/slonic-dashboard-vxstat.png)
-![slonic-dashboard-iostat](https://i.ibb.co/rd5Xm5N/slonic-dashboard-iostat.png)
-![slonic-dashboard-dlstat](https://i.ibb.co/0MpFwK7/slonic-dashboard-dlstat.png)
-![slonic-dashboard-vmstat-mem](https://i.ibb.co/BV8qqx9/slonic-dashboard-vmstat-mem.png)
-![slonic-dashboard-sar](https://i.ibb.co/BZdgJND/slonic-dashboard-sar.png)
+![slonic_dashboard_vmstat](https://user-images.githubusercontent.com/4456811/161803556-0696b354-d761-4f91-84f9-d952294c8667.png)
+![slonic_dashboard_vmstat_mem](https://user-images.githubusercontent.com/4456811/161803538-d3e8aaf2-0ab5-4928-a05a-ecf3ec489354.png)
+![slonic_dashboard_iostat](https://user-images.githubusercontent.com/4456811/161803552-f083e647-6178-4c27-9c00-90f1328ea482.png)
+![slonic_dashboard_vxstat](https://user-images.githubusercontent.com/4456811/161803558-38b95cb2-9f52-4b0c-b2c1-738df4e616ea.png)
+![slonic_dashboard_sar](https://user-images.githubusercontent.com/4456811/161803544-243a6c8b-4734-4d89-8dab-7b64806cf38f.png)
+![slonic_dashboard_dlstat](https://user-images.githubusercontent.com/4456811/161803548-d00f2c05-3f2c-482f-a963-b3aaa46c02b3.png)
